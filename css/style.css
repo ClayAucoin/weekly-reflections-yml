@@ -1,0 +1,168 @@
+/* Overall layout */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: grid;
+  grid-template-rows: auto 1fr; /* header, then the rest */
+  height: 100vh;
+  font-size: 16px;
+}
+
+/* Header spanning full width */
+#page-header {
+  grid-column: 1 / -1;
+  background-color: #00497a;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+#page-header h1, 
+#page-header h2,
+#page-header h3 {
+  margin: 0.3rem 0;
+}
+
+/* Main layout: nav + content */
+#layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 100%;
+}
+
+/* Sidebar nav */
+#side-nav {
+  background-color: #f8f8f8;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+/* Main content area */
+.main-content {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Collapsible nav styles from before */
+.nav-list,
+.week-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.level-toggle {
+  background: none;
+  border: none;
+  font-size: 1.05rem;
+  text-align: left;
+  width: 100%;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  color: #333;
+}
+
+.week-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.level.open .week-list {
+  max-height: 500px;
+}
+
+.week-list a {
+  display: block;
+  padding: 0.3rem 0.6rem;
+  color: #333;
+  text-decoration: none;
+}
+.week-list a:hover {
+  background-color: #e0e0e0;
+}
+
+.week-list a.active-page {
+  font-weight: bold;
+  background-color: #d0e6ff;
+  color: #000;
+}
+
+div.code-content {
+  width: 75%;
+  padding: 10px;
+  margin: 10px;
+}
+
+.spacer {
+  padding-top: 50px;
+}
+
+h1 {
+  font-size: 42px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+h2 {
+  font-size: 32px;
+  text-align: center;
+  font-weight: 550;
+  margin: 10px;
+  color: #ffffff;
+}
+
+h3 {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 550;
+  margin: 10px;
+  color: #ffffff;
+}
+
+p {
+    font-size: 18px;
+    padding: 10px;
+    margin: 10px;
+}
+
+div.img {
+  text-align: center;
+  
+}
+
+img {
+  width: 100%;
+  min-width: 75px;
+  border-radius: 10px;
+  padding: 0;
+  margin: 10px;
+  /*box-shadow: 5px 5px 1px lightblue;*/
+}
+
+hr {
+  width: 97%;
+  box-shadow: 2px 2px 1px lightblue;
+}
+
+.active-page {
+  font-weight: 800;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #007acc;
+}
+
+table.outter {
+  width: 100%;
+  padding: 0%;
+  margin: 0%;
+}
+
+ul {
+  list-style-type: none;
+}
+
+div.center {
+  text-align: center;
+}

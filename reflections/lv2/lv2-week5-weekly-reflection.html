@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/darkula.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/prism-line-numbers.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/min.css">
+
+    <script src="js/navigation.js"></script>
+
+    <title>Clay Aucoin - Level 2 Week 5 Reflection</title>
+</head>
+
+<body>
+
+    <header id="page-header">
+        <h1>Weekly Reflection</h1>
+        <h2>Clay Aucoin</h2>
+        <h3>Level 2 Week 5</h3>
+    </header>
+
+    <div id="layout">
+        <!-- Navigation -->
+        <div id="nav-placeholder"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div style="max-width: 1000px;">
+
+                <p>This week we got into changing content on pages and submitting forms with JavaScript.</p>
+
+                <p>One thing I had an issue with and had to do some research on was having my page immediately refresh
+                    with my form submit posting to the same page. I found that when using a button with the type as
+                    submit, I needed to add the code below to my function to prevent the refresh back to the forms
+                    initial state.</p>
+
+                <div class="code-content">
+                    <ul>
+                        <pre class="command-line"><code>event.preventDefault();</code></pre>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="img"><img style="width: 75%" src="images/lv2/lv2-week5-1.png" alt="Image alt tag"></div>
+
+                <div class="row">
+                    <div class="col-6"><img style="width: 90%" src="images/lv2/lv2-week5-2.png" alt="Image alt tag">
+                    </div>
+                    <div class="col-6"><img style="width: 90%" src="images/lv2/lv2-week5-3.png" alt="Image alt tag">
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

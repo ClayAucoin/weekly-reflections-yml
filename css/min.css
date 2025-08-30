@@ -1,0 +1,8 @@
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #000000;
+  -webkit-text-size-adjust: none;
+  border-radius: 5px;;
+}
