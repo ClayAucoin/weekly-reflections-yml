@@ -40,7 +40,7 @@ jobs:
         run: echo "SITE_DIR=." >> $GITHUB_ENV
 
       - name: Rewrite absolute URLs to /${REPO_NAME}/...
-        working-directory: $SITE_DIR
+        working-directory: ${{ env.SITE_DIR }}
         run: |
           echo "Rewriting root-relative URLs under ${SITE_DIR}..."
           # HTML href/src and CSS url(/...) — avoid protocol-relative '//' and data: URLs
@@ -55,7 +55,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: $SITE_DIR
+          path: ${{ env.SITE_DIR }}
 
       - name: Deploy to Pages
         id: deployment
