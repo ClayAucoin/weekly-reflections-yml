@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ] # change if your default branch is different
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -24,30 +24,46 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get repo name
-        run: echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+      # Set SITE_DIR to your built output if you have a build (e.g., "dist")
+      - name: Set site path
+        run: echo "SITE_DIR=." >> $GITHUB_ENV
 
-      # If you have a build step (Vite/React/etc.), add it here
+      - name: Determine repo type (project vs user site)
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            echo "IS_USER_SITE=true" >> $GITHUB_ENV
+          else
+            echo "IS_USER_SITE=false" >> $GITHUB_ENV
+          fi
+
+      # Only rewrite absolute root-relative URLs for project sites
+      - name: Rewrite /... to /${{ env.REPO_NAME }}/... for project sites
+        if: env.IS_USER_SITE == 'false'
+        working-directory: ${{ env.SITE_DIR }}
+        run: |
+          echo "Rewriting root-relative URLs under ${SITE_DIR} for project site ${REPO_NAME}..."
+          # Avoid protocol-relative // and data:
+          find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) -print0 | xargs -0 sed -i \
+            -e "s|href=\"/\([^/]\)|href=\"/${REPO_NAME}/\1|g" \
+            -e "s|src=\"/\([^/]\)|src=\"/${REPO_NAME}/\1|g" \
+            -e "s|url(/\\([^/)]\\)|url(/${REPO_NAME}/\\1|g"
+
+      # Optional: create .nojekyll to prevent Jekyll processing
+      - name: Add .nojekyll
+        run: |
+          touch "${SITE_DIR}/.nojekyll"
+
+      # If you have a build step (Vite/React/etc.), add it before Upload
       # - name: Setup Node
       #   uses: actions/setup-node@v4
       #   with:
       #     node-version: 20
       # - run: npm ci
       # - run: npm run build
-
-      # Change this to your built site folder if you have one (e.g., dist)
-      - name: Set site path
-        run: echo "SITE_DIR=." >> $GITHUB_ENV
-
-      - name: Rewrite absolute URLs to /${REPO_NAME}/...
-        working-directory: ${{ env.SITE_DIR }}
-        run: |
-          echo "Rewriting root-relative URLs under ${SITE_DIR}..."
-          # HTML href/src and CSS url(/...) — avoid protocol-relative '//' and data: URLs
-          find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) -print0 | xargs -0 sed -i \
-            -e "s|href=\"/\([^/]\)|href=\"/${REPO_NAME}/\1|g" \
-            -e "s|src=\"/\([^/]\)|src=\"/${REPO_NAME}/\1|g" \
-            -e "s|url(/\\([^/)]\\)|url(/${REPO_NAME}/\\1|g"
+      # - name: Set site path to build folder
+      #   run: echo "SITE_DIR=dist" >> $GITHUB_ENV
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
