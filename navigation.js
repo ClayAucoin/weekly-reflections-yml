@@ -1,3 +1,5 @@
+console.log("navigation.js says hi.")
+
 fetch('html/navigation.html')
   .then(response => response.text())
   .then(html => {
