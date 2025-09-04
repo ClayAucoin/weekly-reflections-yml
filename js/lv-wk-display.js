@@ -13,6 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const week = match[2];  // "3"
 
         document.getElementById('display').innerHTML = `Level ${level} &mdash; Week ${week}`;
-        document.getElementById('title').in = `Clay Aucoin — Level ${level} Week ${week} Reflection`;
+        document.getElementById('title').textContent = `Clay Aucoin — Level ${level} Week ${week} Reflection`;
     }
 });
