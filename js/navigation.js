@@ -1,21 +1,36 @@
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // 1) Figure out the project base
-    // If there is a <base>, honor it. Otherwise, derive "/{repo}/" from the URL.
+    // --- Figure out the correct project base ---
     const baseTag = document.querySelector('base[href]');
-    let projectBase = baseTag ? baseTag.getAttribute('href') : null;
+    const { hostname, pathname, origin } = location;
+    const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
 
-    if (!projectBase) {
-      // pathname looks like "/REPO/some/deeper/path.html" for project sites
-      const parts = location.pathname.split('/').filter(Boolean); // remove empty
-      const repo = parts.length > 0 ? parts[0] : '';              // '' for user sites
-      projectBase = repo ? `/${repo}/` : '/';
+    let projectBase;
+
+    if (baseTag) {
+      // Honor an explicit <base> first
+      const a = document.createElement('a');
+      a.href = baseTag.getAttribute('href');
+      projectBase = a.pathname;
+    } else if (isLocal) {
+      // On localhost, treat server root as project root
+      projectBase = '/';
+    } else if (hostname.endsWith('.github.io')) {
+      // On GitHub Pages, project sites live under /REPO/
+      const parts = pathname.split('/').filter(Boolean);
+      const repo = parts.length ? parts[0] : '';
+      projectBase = repo ? `/${repo}/` : '/'; // user/org site vs project site
+    } else {
+      // Fallback: use root
+      projectBase = '/';
     }
+
     if (!projectBase.endsWith('/')) projectBase += '/';
 
-    const navUrl = new URL('html/navigation.html', location.origin + projectBase);
+    // Always fetch from the computed project root
+    const navUrl = new URL('html/navigation.html', origin + projectBase);
 
-    // 2) Fetch and inject
+    // --- Fetch + inject nav ---
     const res = await fetch(navUrl.href, { cache: 'no-cache' });
     if (!res.ok) throw new Error(`Failed to load nav: ${res.status}`);
     const html = await res.text();
@@ -24,10 +39,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!navContainer) throw new Error('#nav-placeholder not found');
     navContainer.innerHTML = html;
 
-    // 3) Active link + collapsible behavior
+    // --- Active link + collapsible behavior ---
     const normalize = p =>
-      p.replace(/\/+$/, '')
-       .replace(/\/index\.html$/, '') || '/';
+      (p || '/')
+        .replace(/\/+$/, '')
+        .replace(/\/index\.html$/i, '') || '/';
 
     const currentPath = normalize(location.pathname);
 
@@ -50,8 +66,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (activeLevel) activeLevel.classList.add('open');
 
-    // Optional: quick debug so you can verify where it's fetching from
-    // console.log('Nav fetch from:', navUrl.href, '| projectBase:', projectBase);
+    // Debug line if you want to verify:
+    // console.log('navUrl:', navUrl.href, 'projectBase:', projectBase);
 
   } catch (err) {
     console.error(err);
