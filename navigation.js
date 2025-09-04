@@ -1,4 +1,4 @@
-fetch('/html/navigation.html')
+fetch('html/navigation.html')
   .then(response => response.text())
   .then(html => {
     const navContainer = document.getElementById('nav-placeholder');
