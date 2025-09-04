@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const level = match[1]; // "2"
         const week = match[2];  // "3"
 
-        document.getElementById('display').textContent = `Level ${level} &mdash; Week ${week}`;
-        document.getElementById('title').textContent = `Clay Aucoin &mdash; Level ${level} Week ${week} Reflection`;
+        document.getElementById('display').innerHTML = `Level ${level} &mdash; Week ${week}`;
+        document.getElementById('title').in = `Clay Aucoin — Level ${level} Week ${week} Reflection`;
     }
 });
